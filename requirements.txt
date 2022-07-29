@@ -4,3 +4,4 @@ jupyterlab
 tensorflow
 clearml
 matplotlib
+sklearn
