@@ -19,7 +19,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import dateutil
 import preprocessing
-from util import plotting
+# from util import plotting
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, LSTM, Dropout, RepeatVector, TimeDistributed
 
@@ -128,8 +128,8 @@ def main():
     test_score_df['Close'] = test_data[TIME_STEPS:]['value']
     anomalies = test_score_df.loc[test_score_df['anomaly'] == True]
     
-    plotting.plot_clustering_two_ds(test_score_df, anomalies, 'original')
-    plotting.plot_clustering_two_ds(test_score_df, anomalies, 'loss')
+    # plotting.plot_clustering_two_ds(test_score_df, anomalies, 'original')
+    # plotting.plot_clustering_two_ds(test_score_df, anomalies, 'loss')
 
     task.upload_artifact('seasonality', seasonality)
     if seasonality is not None:
