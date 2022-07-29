@@ -93,7 +93,7 @@ def main():
 
     # Connecting ClearML with the current process,
     # from here on everything is logged automatically
-    task = Task.init(project_name='serving examples', task_name='train lstm model', output_uri=True)
+    task = Task.init(project_name='serving examples', task_name='test training lstm model', output_uri=True)
 
     output_folder = os.path.join(tempfile.gettempdir(), 'keras_example_new_temp_now')
 
