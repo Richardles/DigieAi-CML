@@ -6,4 +6,3 @@ clearml
 matplotlib
 sklearn
 statsmodels
-tk
