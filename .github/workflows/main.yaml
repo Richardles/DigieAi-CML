@@ -46,7 +46,7 @@ jobs:
               }
           }
           # echo "${{ github.event.inputs.credential }}"
-          # python train_keras_lstm.py
+          python train_keras_lstm.py
         # shell: bash
       - name: Write CML report
         env:
