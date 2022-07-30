@@ -34,20 +34,20 @@ jobs:
       #   with:
       #     python-version: '3.x'
       - uses: iterative/setup-cml@v1
-      - name: Train model
+      - name: Init ClearML
         run: |
           # Your ML workflow goes here
           pip install -r requirements.txt
-          # clearml-init
-          ${{ github.event.inputs.pipversion }}
+          clearml-init
+          # ${{ github.event.inputs.pipversion }}
           # pip --version
-          # echo "${{ github.event.inputs.credential }}"
-          # python train_keras_lstm.py
+          ${{ github.event.inputs.credential }}
         # shell: bash
-      - name: Write CML report
-        env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Train model
+        # env:
+        #   REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          python train_keras_lstm.py
           # Post reports as comments in GitHub PRs
-          cat results.txt >> report.md
-          cml send-comment report.md
+          # cat results.txt >> report.md
+          # cml send-comment report.md
