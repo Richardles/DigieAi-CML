@@ -37,9 +37,9 @@ jobs:
       - name: Init ClearML
         run: |
           # Your ML workflow goes here
-          # pip install -r requirements.txt
-          # clearml-init
           echo "C:\Users\michell cia" >> $GITHUB_PATH
+          pip install -r requirements.txt
+          # clearml-init
           # echo "${{ github.event.inputs.configuration }}"
           # ${{ github.event.inputs.pipversion }}
           # pip --version
@@ -48,7 +48,7 @@ jobs:
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # python train_keras_lstm.py
+          python train_keras_lstm.py
           # Post reports as comments in GitHub PRs
           # cat results.txt >> report.md
           # cml send-comment report.md
