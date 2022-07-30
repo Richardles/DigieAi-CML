@@ -28,7 +28,8 @@ jobs:
           # Your ML workflow goes here
           pip install -r requirements.txt
           echo "Cred: ${{ github.event.inputs.credential }}" 
-          echo "::clearml-init::$CRED"
+          # clearml-init
+          echo "$CRED"
           # python train_keras_lstm.py
         # shell: bash
       - name: Write CML report
