@@ -1,11 +1,11 @@
 name: Model-Training
 on: [push]
-workflow_dispatch:
-  inputs:
-    credential:
-        description: 'clearml credential'     
-        required: true
-        default: 'prod'
+  workflow_dispatch:
+    inputs:
+      credential:
+          description: 'clearml credential'     
+          required: true
+          default: 'prod'
 jobs:
   run:
     runs-on: windows-latest
