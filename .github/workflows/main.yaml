@@ -41,13 +41,13 @@ jobs:
           clearml-init
           # ${{ github.event.inputs.pipversion }}
           # pip --version
-          ${{ github.event.inputs.credential }}
+          # ${{ github.event.inputs.credential }}
         # shell: bash
       - name: Train model
-        # env:
-        #   REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python train_keras_lstm.py
+          # python train_keras_lstm.py
           # Post reports as comments in GitHub PRs
           # cat results.txt >> report.md
           # cml send-comment report.md
