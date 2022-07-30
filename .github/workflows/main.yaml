@@ -41,6 +41,7 @@ jobs:
           # clearml-init
           # ${{ github.event.inputs.configuration }}
           ${{ github.event.inputs.pipversion }}
+          ${{ secrets.GITHUB_TOKEN }}
           [[ "${{ github.event.inputs.pipversion }}" ]] || { echo "doppler_token input is empty" ; exit 1; }
           # pip --version
         shell: bash
