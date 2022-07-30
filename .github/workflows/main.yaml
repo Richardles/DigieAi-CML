@@ -5,10 +5,10 @@ on:
       credential:
           description: 'clearml credential'     
           required: true
-          default: 'prod'
+          default: 'cred'
 jobs:
   run:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     # optionally use a convenient Ubuntu LTS + DVC + CML image
     # container: docker://ghcr.io/iterative/cml:0-dvc2-base1
     steps:
@@ -21,12 +21,14 @@ jobs:
       #   with:
       #     python-version: '3.x'
       - uses: iterative/setup-cml@v1
+        env:
+          CRED: "creden"
       - name: Train model
         run: |
           # Your ML workflow goes here
           pip install -r requirements.txt
           echo "Cred: ${{ github.event.inputs.credential }}" 
-          clearml-init
+          echo "::clearml-init::$CRED"
           # python train_keras_lstm.py
         # shell: bash
       - name: Write CML report
