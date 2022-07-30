@@ -31,11 +31,13 @@ jobs:
       #     python-version: '3.x'
       - uses: iterative/setup-cml@v1
       - name: Train model
+        env:
+          creden: ${{ github.event.inputs.credential }}
         run: |
           # Your ML workflow goes here
           pip install -r requirements.txt
           clearml-init
-          echo "${{ github.event.inputs.credential }}" 
+          echo "$creden"
           # python train_keras_lstm.py
         # shell: bash
       - name: Write CML report
