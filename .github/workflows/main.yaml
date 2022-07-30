@@ -1,5 +1,11 @@
 name: Model-Training
 on: [push]
+workflow_dispatch:
+  inputs:
+    credential:
+        description: 'clearml credential'     
+        required: true
+        default: 'prod'
 jobs:
   run:
     runs-on: windows-latest
@@ -19,6 +25,7 @@ jobs:
         run: |
           # Your ML workflow goes here
           pip install -r requirements.txt
+          echo "Cred: ${{ github.event.inputs.credential }}" 
           clearml-init
           # python train_keras_lstm.py
         # shell: bash
