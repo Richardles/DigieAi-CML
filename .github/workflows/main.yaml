@@ -39,7 +39,7 @@ jobs:
           # Your ML workflow goes here
           pip install -r requirements.txt
           clearml-init
-          # ${{ github.event.inputs.pipversion }}
+          ${{ github.event.inputs.pipversion }}
           # pip --version
           # ${{ github.event.inputs.credential }}
         # shell: bash
