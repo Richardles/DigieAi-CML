@@ -34,19 +34,20 @@ jobs:
         run: |
           # Your ML workflow goes here
           pip install -r requirements.txt
-          clearml-init
-          api { 
-              # Richardles Workspace
-              web_server: https://app.clear.ml
-              api_server: https://api.clear.ml
-              files_server: https://files.clear.ml
-              credentials {
-                  "access_key" = "Y26LJVWNURD8DZZTGK39"
-                  "secret_key" = "sbuXwW6uYWiX8XydT73EDh4Yayn3ZpO8FdjDZ3BJmoInQJNLYo"
-              }
-          }
+          # clearml-init
+          # api { 
+          #     # Richardles Workspace
+          #     web_server: https://app.clear.ml
+          #     api_server: https://api.clear.ml
+          #     files_server: https://files.clear.ml
+          #     credentials {
+          #         "access_key" = "Y26LJVWNURD8DZZTGK39"
+          #         "secret_key" = "sbuXwW6uYWiX8XydT73EDh4Yayn3ZpO8FdjDZ3BJmoInQJNLYo"
+          #     }
+          # }
+          pip --version
           # echo "${{ github.event.inputs.credential }}"
-          python train_keras_lstm.py
+          # python train_keras_lstm.py
         # shell: bash
       - name: Write CML report
         env:
