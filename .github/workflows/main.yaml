@@ -2,7 +2,7 @@ name: Model-Training
 on:
   workflow_dispatch:
     inputs:
-      credential:
+      configuration:
           description: 'clearml training feeder credential'     
           required: true
           default: 'api { 
@@ -39,10 +39,11 @@ jobs:
           # Your ML workflow goes here
           pip install -r requirements.txt
           clearml-init
-          ${{ github.event.inputs.pipversion }}
+          ${{ github.event.inputs.configuration }}
+
+          # ${{ github.event.inputs.pipversion }}
           # pip --version
-          # ${{ github.event.inputs.credential }}
-        # shell: bash
+        shell: bash
       - name: Train model
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
