@@ -6,3 +6,4 @@ clearml
 matplotlib
 sklearn
 statsmodels
+clearml-serving
