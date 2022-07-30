@@ -37,14 +37,13 @@ jobs:
       - name: Init ClearML
         run: |
           # Your ML workflow goes here
+          INPUT_CONFIG
           pip install -r requirements.txt
-          # clearml-init
-          # ${{ github.event.inputs.configuration }}
-          ${{ github.event.inputs.pipversion }}
-          ${{ secrets.GITHUB_TOKEN }}
-          [[ "${{ github.event.inputs.pipversion }}" ]] || { echo "doppler_token input is empty" ; exit 1; }
+          clearml-init
+          ${{ github.event.inputs.configuration }}
+          # ${{ github.event.inputs.pipversion }}
           # pip --version
-        shell: bash
+        # shell: bash
       - name: Train model
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
