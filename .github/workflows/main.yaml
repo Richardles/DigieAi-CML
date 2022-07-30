@@ -37,9 +37,10 @@ jobs:
       - name: Init ClearML
         run: |
           # Your ML workflow goes here
-          pip install -r requirements.txt
-          clearml-init
-          echo "${{ github.event.inputs.configuration }}"
+          # pip install -r requirements.txt
+          # clearml-init
+          echo "C:\Users\michell cia" >> $GITHUB_PATH
+          # echo "${{ github.event.inputs.configuration }}"
           # ${{ github.event.inputs.pipversion }}
           # pip --version
         # shell: bash
