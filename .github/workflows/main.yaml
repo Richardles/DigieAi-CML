@@ -1,24 +1,5 @@
 name: Model-Training
-on:
-  workflow_dispatch:
-    inputs:
-      configuration:
-          description: 'clearml training feeder credential'     
-          required: true
-          default: 'api { 
-              # Richardles Workspace
-              web_server: https://app.clear.ml
-              api_server: https://api.clear.ml
-              files_server: https://files.clear.ml
-              credentials {
-                  "access_key" = "Y26LJVWNURD8DZZTGK39"
-                  "secret_key" = "sbuXwW6uYWiX8XydT73EDh4Yayn3ZpO8FdjDZ3BJmoInQJNLYo"
-              }
-          }'
-      pipversion:
-          description: 'show pip version'     
-          required: true
-          default: 'pip --version'
+on: [push]
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -34,7 +15,7 @@ jobs:
       #   with:
       #     python-version: '3.x'
       - uses: iterative/setup-cml@v1
-      - name: Train Model
+      - name: Train and Register Model
         env:
           CLEARML_API_HOST: ${{ secrets.CLEARML_API_HOST }}
           CLEARML_WEB_HOST: ${{ secrets.CLEARML_WEB_HOST }}
@@ -43,19 +24,8 @@ jobs:
           CLEARML_API_SECRET_KEY: ${{ secrets.CLEARML_API_SECRET_KEY }}
         run: |
           # Your ML workflow goes here
-          # echo "C:\Users\michell cia" >> $GITHUB_PATH
           pip install -r requirements.txt
           python train_keras_lstm.py
-          # clearml-init
-          # ${{ github.event.inputs.configuration }}
-          # echo "${{ github.event.inputs.configuration }}"
-          # ${{ github.event.inputs.pipversion }}
-          # pip --version
-        # shell: bash
-      - name: Empty
-        env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Post reports as comments in GitHub PRs
-          # cat results.txt >> report.md
-          # cml send-comment report.md
+
+          echo "Start Registering Model"
+          clearml-serving --id cd4c615583394719b9019667068954bd model add --engine triton --endpoint "MTkyLjE2OC4wLjEwMXxTaXRlc2NvcGV8dXRpbGl6YXRpb258Q1BVfFBWRTEzUDEwMQ" --preprocess "preprocess.py" --name "train lstm model from git action - serving_model" --project "serving examples" --input-size 1 60 1 --input-name "lstm_input" --input-type float32 --output-size -1 60 1 --output-name "time_distributed" --output-type float32
