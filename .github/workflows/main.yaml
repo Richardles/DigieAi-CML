@@ -30,7 +30,11 @@ jobs:
           echo "Start Registering Model"
           clearml-serving --id cd4c615583394719b9019667068954bd model add --engine triton --endpoint "MTkyLjE2OC4wLjEwMXxTaXRlc2NvcGV8dXRpbGl6YXRpb258Q1BVfFBWRTEzUDEwMQ" --preprocess "preprocess.py" --name "train lstm model from git action - serving_model" --project "serving examples" --input-size 1 60 1 --input-name "lstm_input" --input-type float32 --output-size -1 60 1 --output-name "time_distributed" --output-type float32
       - name: Commit files
-        run:
+        run: |
+          git config --local user.name actions-user
+
+          git config --local user.email "actions@github.com"
+
           git add .
 
           git commit -m "Created at $(date)"
