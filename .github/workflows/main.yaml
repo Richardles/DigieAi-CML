@@ -1,7 +1,12 @@
 name: Model-Training
-on: [push]
+on: 
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '30 1 1,15 * *'
+    
 jobs:
   run:
+    
     runs-on: ubuntu-latest
     # optionally use a convenient Ubuntu LTS + DVC + CML image
     # container: docker://ghcr.io/iterative/cml:0-dvc2-base1
