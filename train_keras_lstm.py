@@ -54,7 +54,7 @@ def main():
     seasonality = preprocessing.get_seasonality(train_data)
     if seasonality is not None:
         print(f'seasonality not none: {seasonality}')
-        train_data, z_score = preprocessing.z_score(train_data, seasonality)
+        # train_data, z_score = preprocessing.z_score(train_data, seasonality)
     # train_data, z_score = preprocessing.z_score(train_data, 'hourly')
     # train_data[['value']] = preprocessing.scale(train_data[['value']])
 
@@ -65,8 +65,8 @@ def main():
     trendp = regressor.predict(X_test_value)
     detrended = [y_test_value[i]-trendp[i] for i in range(0, len(test_data['value']))]
     test_data['value'] = detrended
-    if seasonality is not None:
-        test_data = preprocessing.z_score(test_data, seasonality, z_score)
+    # if seasonality is not None:
+    #     test_data = preprocessing.z_score(test_data, seasonality, z_score)
     # test_data[['value']] = preprocessing.scale(test_data[['value']], is_test=True)
 
     TIME_STEPS = 60
