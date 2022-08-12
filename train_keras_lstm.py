@@ -139,8 +139,8 @@ def main():
     # plotting.plot_clustering_two_ds(test_score_df, anomalies, 'loss')
 
     task.upload_artifact('seasonality', seasonality)
-    if seasonality is not None:
-        task.upload_artifact('z_score', z_score)
+    # if seasonality is not None:
+        # task.upload_artifact('z_score', z_score)
     task.upload_artifact('time_steps', TIME_STEPS)
     task.upload_artifact('threshold', threshold)
     task.upload_artifact('trend_step', len(train_data))
