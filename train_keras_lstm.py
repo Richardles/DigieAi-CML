@@ -41,6 +41,8 @@ def main():
 
     train_data = train_data.resample('1T').mean()
     test_data = test_data.resample('1T').mean()
+    train_data = train_data.dropna()
+    test_data = test_data.dropna()
 
     print(f'Train shape: {train_data.shape}')
     plt.rcParams["figure.figsize"] = [18.00, 6.50]

@@ -154,19 +154,7 @@ def detrend_regression(df):
     # polynomial_regressor = create_ransac_model()
     # X_poly_value = get_polynomial_features(X_test_value)
 
-    print(type(y_test_value))
-    y_new = []
-    for item in y_test_value:
-        if str(item) != 'nan':
-            y_new.append(item)
-
-    x_new = np.delete(X_test_value, 0)
-    print(type(x_new))
-    np.reshape(x_new, )
-    print(x_new.shape)
-
-    # linear_regressor.fit(X_test_value, y_test_value)
-    linear_regressor.fit(x_new, y_new)
+    linear_regressor.fit(X_test_value, y_test_value)
     # polynomial_regressor.fit(X_poly_value, y_test_value)
 
     linear_trend = linear_regressor.predict(X_test_value)
