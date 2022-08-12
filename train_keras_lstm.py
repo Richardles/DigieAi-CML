@@ -44,6 +44,9 @@ def main():
     train_data = train_data.dropna()
     test_data = test_data.dropna()
 
+    print(train_data)
+    print(test_data)
+
     print(f'Train shape: {train_data.shape}')
     plt.rcParams["figure.figsize"] = [18.00, 6.50]
     plt.plot(train_data)
