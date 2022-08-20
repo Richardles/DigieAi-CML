@@ -19,10 +19,10 @@ from datetime import timedelta
 #    sys.exit(1)
  
 connection = MySQLdb.connect(
-    host="localhost",
-    user="root",
-    passwd="",
-    db="ai_digi_test"
+    host="cxmgkzhk95kfgbq4.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    user="stdljsfpav5tcuyu",
+    passwd="rlcp7138ga6el795",
+    db="woug2myfcgwlsafy"
 )
  
 cur = connection.cursor()
