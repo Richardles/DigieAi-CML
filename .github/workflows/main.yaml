@@ -25,7 +25,7 @@ jobs:
 
       - name: Install requirements
         run: |
-        echo "Installing Requirements"
+          echo "Installing Requirements"
           pip install -r requirements.txt
 
       - name: Connect and Fetch Data from Database
