@@ -13,6 +13,21 @@ jobs:
     # optionally use a convenient Ubuntu LTS + DVC + CML image
     # container: docker://ghcr.io/iterative/cml:0-dvc2-base1
     steps:
+      - name: Connect and Fetch Data from Database
+          run: |
+            echo "Connecting and Fetching"
+            python connect.py
+      - name: Push to Origin Main
+          run: |
+            git config --local user.name actions-user
+
+            git config --local user.email "actions@github.com"
+
+            git add .
+
+            git commit -m "Created at $(date)"
+
+            git push origin main
       - uses: actions/checkout@v2
       # may need to setup NodeJS & Python3 on e.g. self-hosted
       # - uses: actions/setup-node@v2

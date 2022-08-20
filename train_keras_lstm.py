@@ -28,8 +28,8 @@ from clearml import Task
 def main():
     # train_data = pd.read_csv('dataset01-disk-filesystem-incomplete_train - Copy.csv', parse_dates=['date'], names=['date', 'value'])
     # test_data = pd.read_csv('dataset01-disk-filesystem-incomplete - Copy.csv', parse_dates=['date'], names=['date', 'value'])
-    train_data = pd.read_csv('test_data.csv', parse_dates=['date'], names=['date', 'value'])
-    test_data = pd.read_csv('test_data.csv', parse_dates=['date'], names=['date', 'value'])
+    train_data = pd.read_csv('test_data2.csv', parse_dates=['date'], names=['date', 'value'])
+    test_data = pd.read_csv('test_data2.csv', parse_dates=['date'], names=['date', 'value'])
 
     # drop duplicates based on date and keep last duplicate
     # train_data = train_data.drop_duplicates(subset='date', keep="last")
