@@ -1,24 +1,41 @@
-import mariadb
+# import mariadb
 import sys
 import csv
+import MySQLdb
 from datetime import datetime
 from datetime import timedelta
 
-# Instantiate Connection
-try:
-   conn = mariadb.connect(
-      host="localhost",
-      port=3306,
-      user="root",
-      password="",
-      database="ai_digi_test"
-    )
-except mariadb.Error as e:
-   print(f"Error connecting to the database: {e}")
-   sys.exit(1)
+# Instantiate mariadb Connection
+# try:
+#    conn = mariadb.connect(
+#       host="localhost",
+#       port=3306,
+#       user="root",
+#       password="",
+#       database="ai_digi_test"
+#     )
+# except mariadb.Error as e:
+#    print(f"Error connecting to the database: {e}")
+#    sys.exit(1)
+ 
+connection = MySQLdb.connect(
+    host="localhost",
+    user="root",
+    passwd="",
+    db="ai_digi_test"
+)
+ 
+cur = connection.cursor()
+cur.execute("select database();")
+db = cur.fetchone()
+ 
+if db:
+    print("You're connected to database: ", db)
+else:
+    print('Not connected.')
 
 # Get Cursor
-cur = conn.cursor()
+# cur = conn.cursor()
 
 # Use Connection
 # ...
@@ -63,4 +80,4 @@ with open('test_data2.csv', 'w', newline='') as out:
 #     print(f"First Name: {first_name}, Last Name: {last_name}")
 
 # Close Connection
-conn.close()
+connection.close()
