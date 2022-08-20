@@ -22,7 +22,12 @@ jobs:
       #   with:
       #     python-version: '3.x'
       - uses: iterative/setup-cml@v1
-      
+
+      - name: Install requirements
+        run: |
+        echo "Installing Requirements"
+          pip install -r requirements.txt
+
       - name: Connect and Fetch Data from Database
         run: |
           echo "Connecting and Fetching"
@@ -49,7 +54,6 @@ jobs:
           CLEARML_API_SECRET_KEY: ${{ secrets.CLEARML_API_SECRET_KEY }}
         run: |
           # Your ML workflow goes here
-          pip install -r requirements.txt
           python train_keras_lstm.py
 
           echo "Start Registering Model"
