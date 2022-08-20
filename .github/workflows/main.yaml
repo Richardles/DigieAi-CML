@@ -23,20 +23,20 @@ jobs:
       #     python-version: '3.x'
       - uses: iterative/setup-cml@v1
       - name: Connect and Fetch Data from Database
-          run: |
-            echo "Connecting and Fetching"
-            python connect.py
-      # - name: Push to Origin Main
-      #     run: |
-      #       git config --local user.name actions-user
+        run: |
+          echo "Connecting and Fetching"
+          python connect.py
+      - name: Push to Origin Main
+        run: |
+          git config --local user.name actions-user
 
-      #       git config --local user.email "actions@github.com"
+          git config --local user.email "actions@github.com"
 
-      #       git add .
+          git add .
 
-      #       git commit -m "Created at $(date)"
+          git commit -m "Created at $(date)"
 
-      #       git push origin main
+          git push origin main
       - name: Train and Register Model
         env:
           CLEARML_API_HOST: ${{ secrets.CLEARML_API_HOST }}
