@@ -33,7 +33,8 @@ jobs:
           echo "Connecting and Fetching"
           python connect.py
           
-      - name: Push to Origin Main
+      - name: Push Dataset to Origin Main
+        continue-on-error: true
         run: |
           git config --local user.name actions-user
 
@@ -46,7 +47,7 @@ jobs:
           git push origin main
 
       - name: Train and Register Model
-        if: always()
+        # if: always()
         env:
           CLEARML_API_HOST: ${{ secrets.CLEARML_API_HOST }}
           CLEARML_WEB_HOST: ${{ secrets.CLEARML_WEB_HOST }}
@@ -62,7 +63,7 @@ jobs:
           clearml-serving --id cd4c615583394719b9019667068954bd model add --engine triton --endpoint "test_lstm_v2" --preprocess "preprocess.py" --name "train lstm model from git action - serving_model" --project "serving examples" --input-size 1 60 1 --input-name "lstm_input" --input-type float32 --output-size -1 60 1 --output-name "time_distributed" --output-type float32
       
       - name: Commit files
-        if: always()
+        # if: always()
         run: |
           git config --local user.name actions-user
 
