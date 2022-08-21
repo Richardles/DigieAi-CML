@@ -46,6 +46,7 @@ jobs:
           git push origin main
 
       - name: Train and Register Model
+        if: always()
         env:
           CLEARML_API_HOST: ${{ secrets.CLEARML_API_HOST }}
           CLEARML_WEB_HOST: ${{ secrets.CLEARML_WEB_HOST }}
