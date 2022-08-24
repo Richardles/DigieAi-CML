@@ -28,7 +28,7 @@ jobs:
         timeout-minutes: 1
         run: until ping -c1 vpn.is-gs.com; do sleep 2; done
         # OR
-        run: until dig @127.0.0.1 vpn.is-gs.com A +time=1; do sleep 2; done
+        # run: until dig @127.0.0.1 vpn.is-gs.com A +time=1; do sleep 2; done
 
       - name: Deploy
         run: some-command
