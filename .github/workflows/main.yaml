@@ -8,70 +8,69 @@ on:
 
 jobs:
   run:
-    
-    runs-on: ubuntu-latest
-    # optionally use a convenient Ubuntu LTS + DVC + CML image
-    # container: docker://ghcr.io/iterative/cml:0-dvc2-base1
-    steps:
-      - uses: actions/checkout@v2
-      # may need to setup NodeJS & Python3 on e.g. self-hosted
-      # - uses: actions/setup-node@v2
-      #   with:
-      #     node-version: '16'
-      - uses: actions/setup-python@v2
-      #   with:
-      #     python-version: '3.x'
-      - uses: iterative/setup-cml@v1
+    connect-open-vpn:
+      runs-on: ubuntu-latest
+      # optionally use a convenient Ubuntu LTS + DVC + CML image
+      # container: docker://ghcr.io/iterative/cml:0-dvc2-base1
+      steps:
+        - uses: actions/checkout@v2
+        # may need to setup NodeJS & Python3 on e.g. self-hosted
+        # - uses: actions/setup-node@v2
+        #   with:
+        #     node-version: '16'
+        - uses: actions/setup-python@v2
+        #   with:
+        #     python-version: '3.x'
+        - uses: iterative/setup-cml@v1
+        - name: Install requirements
+          run: |
+            echo "Installing Requirements"
+            pip install -r requirements.txt
 
-      - name: Install requirements
-        run: |
-          echo "Installing Requirements"
-          pip install -r requirements.txt
+        - name: Connect and Fetch Data from Database
+          run: |
+            echo "Connecting and Fetching"
+            python connect.py
+            
+        - name: Push Dataset to Origin Main
+          continue-on-error: true
+          run: |
+            git config --local user.name actions-user
 
-      - name: Connect and Fetch Data from Database
-        run: |
-          echo "Connecting and Fetching"
-          python connect.py
-          
-      - name: Push Dataset to Origin Main
-        continue-on-error: true
-        run: |
-          git config --local user.name actions-user
+            git config --local user.email "actions@github.com"
 
-          git config --local user.email "actions@github.com"
+            git add .
 
-          git add .
+            git commit -m "Created at $(date)"
 
-          git commit -m "Created at $(date)"
+            git push origin main
 
-          git push origin main
+        - name: Train and Register Model
+          # if: always()
+          env:
+            CLEARML_API_HOST: ${{ secrets.CLEARML_API_HOST }}
+            CLEARML_WEB_HOST: ${{ secrets.CLEARML_WEB_HOST }}
+            CLEARML_FILES_HOST: ${{ secrets.CLEARML_FILES_HOST }}
+            CLEARML_API_ACCESS_KEY: ${{ secrets.CLEARML_API_ACCESS_KEY }}
+            CLEARML_API_SECRET_KEY: ${{ secrets.CLEARML_API_SECRET_KEY }}
+          run: |
+            # Your ML workflow goes here
+            python train_keras_lstm.py
 
-      - name: Train and Register Model
-        # if: always()
-        env:
-          CLEARML_API_HOST: ${{ secrets.CLEARML_API_HOST }}
-          CLEARML_WEB_HOST: ${{ secrets.CLEARML_WEB_HOST }}
-          CLEARML_FILES_HOST: ${{ secrets.CLEARML_FILES_HOST }}
-          CLEARML_API_ACCESS_KEY: ${{ secrets.CLEARML_API_ACCESS_KEY }}
-          CLEARML_API_SECRET_KEY: ${{ secrets.CLEARML_API_SECRET_KEY }}
-        run: |
-          # Your ML workflow goes here
-          python train_keras_lstm.py
+            echo "Start Registering Model"
+            # clearml-serving --id cd4c615583394719b9019667068954bd model add --engine triton --endpoint "MTkyLjE2OC4wLjEwMXxTaXRlc2NvcGV8dXRpbGl6YXRpb258Q1BVfFBWRTEzUDEwMQ" --preprocess "preprocess.py" --name "train lstm model from git action - serving_model" --project "serving examples" --input-size 1 60 1 --input-name "lstm_input" --input-type float32 --output-size -1 60 1 --output-name "time_distributed" --output-type float32
+            clearml-serving --id cd4c615583394719b9019667068954bd model add --engine triton --endpoint "test_lstm_v2" --preprocess "preprocess.py" --name "train lstm model from git action - serving_model" --project "serving examples" --input-size 1 60 1 --input-name "lstm_input" --input-type float32 --output-size -1 60 1 --output-name "time_distributed" --output-type float32
+        
+        - name: Commit files
+          # if: always()
+          run: |
+            git config --local user.name actions-user
 
-          echo "Start Registering Model"
-          # clearml-serving --id cd4c615583394719b9019667068954bd model add --engine triton --endpoint "MTkyLjE2OC4wLjEwMXxTaXRlc2NvcGV8dXRpbGl6YXRpb258Q1BVfFBWRTEzUDEwMQ" --preprocess "preprocess.py" --name "train lstm model from git action - serving_model" --project "serving examples" --input-size 1 60 1 --input-name "lstm_input" --input-type float32 --output-size -1 60 1 --output-name "time_distributed" --output-type float32
-          clearml-serving --id cd4c615583394719b9019667068954bd model add --engine triton --endpoint "test_lstm_v2" --preprocess "preprocess.py" --name "train lstm model from git action - serving_model" --project "serving examples" --input-size 1 60 1 --input-name "lstm_input" --input-type float32 --output-size -1 60 1 --output-name "time_distributed" --output-type float32
-      
-      - name: Commit files
-        # if: always()
-        run: |
-          git config --local user.name actions-user
+            git config --local user.email "actions@github.com"
 
-          git config --local user.email "actions@github.com"
+            git add .
 
-          git add .
+            git commit -m "Created at $(date)"
 
-          git commit -m "Created at $(date)"
-
-          git push origin main
+            git push origin main
 
