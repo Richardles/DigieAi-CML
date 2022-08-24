@@ -8,25 +8,33 @@ jobs:
   connect-open-vpn:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - name: Install OpenVPN
+        run: |
+          sudo apt-get update
+          sudo apt-get --assume-yes --no-install-recommends install openvpn          
 
-      - name: Install Open VPN
-        run: sudo apt-get install openvpn
+      - name: Setup VPN config
+        run: |
+          echo "${{ secrets.CA_CRT }}" > ca.crt
+          echo "${{ secrets.USER_CRT }}" > user.crt
+          echo "${{ secrets.USER_KEY }}" > user.key
+          echo "${{ secrets.SECRET_USERNAME_PASSWORD }}" > secret.txt
+          # echo "${{ secrets.TLS_KEY }}" > tls.key          
 
-      - name: Connect-VPN
-        uses: golfzaptw/action-connect-ovpn@2.0.1
-        id: connect_vpn
-        with:
-          PING_URL: 'vpn.is-gs.com'
-          FILE_OVPN: '.github/vpn/config.ovpn'
-          SECRET: ${{ secrets.SECRET_USERNAME_PASSWORD }}
-          TLS_KEY: ''
-        env:
-          CA_CRT: ${{ secrets.CA_CRT }}
-          USER_CRT: ${{ secrets.USER_CRT }}
-          USER_KEY: ${{ secrets.USER_KEY }}
-      - name: Check Connect VPN
-        run: echo ${{ steps.connect_vpn.outputs.STATUS }}
-      - name: kill vpn
+      - name: Connect VPN
+        run: sudo openvpn --config ".github/vpn/config.ovpn" --log "vpn.log" --daemon
+
+      - name: Wait for a VPN connection
+        timeout-minutes: 1
+        run: until ping -c1 vpn.is-gs.com; do sleep 2; done
+        # OR
+        run: until dig @127.0.0.1 vpn.is-gs.com A +time=1; do sleep 2; done
+
+      - name: Deploy
+        run: some-command
+  
+      - name: Kill VPN connection
         if: always()
-        run: sudo killall openvpn
+        run: |
+          sudo chmod 777 vpn.log
+          sudo killall openvpn  
