@@ -8,7 +8,6 @@ on:
 
 jobs:
   run:
-    connect-open-vpn:
       runs-on: ubuntu-latest
       # optionally use a convenient Ubuntu LTS + DVC + CML image
       # container: docker://ghcr.io/iterative/cml:0-dvc2-base1

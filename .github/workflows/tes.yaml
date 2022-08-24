@@ -4,28 +4,29 @@ on:
     # * is a special character in YAML so you have to quote this string
   workflow_dispatch:
 
-connect-open-vpn:
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v1
+jobs:
+  connect-open-vpn:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
 
-    - name: Install Open VPN
-      run: sudo apt-get install openvpn
+      - name: Install Open VPN
+        run: sudo apt-get install openvpn
 
-    - name: Connect-VPN
-      uses: golfzaptw/action-connect-ovpn@2.0.1
-      id: connect_vpn
-      with:
-        PING_URL: 'vpn.is-gs.com'
-        FILE_OVPN: '.github/vpn/config.ovpn'
-        SECRET: ${{ secrets.SECRET_USERNAME_PASSWORD }}
-        # TLS_KEY: ${{ secrets.TLS_KEY }}
-      env:
-        CA_CRT: ${{ secrets.CA_CRT}}
-        USER_CRT: ${{ secrets.USER_CRT }}
-        USER_KEY: ${{ secrets.USER_KEY }}
-    - name: Check Connect VPN
-      run: echo ${{ steps.connect_vpn.outputs.STATUS }}
-    - name: kill vpn
-      if: always()
-      run: sudo killall openvpn
+      - name: Connect-VPN
+        uses: golfzaptw/action-connect-ovpn@2.0.1
+        id: connect_vpn
+        with:
+          PING_URL: 'vpn.is-gs.com'
+          FILE_OVPN: '.github/vpn/config.ovpn'
+          SECRET: ${{ secrets.SECRET_USERNAME_PASSWORD }}
+          # TLS_KEY: ${{ secrets.TLS_KEY }}
+        env:
+          CA_CRT: ${{ secrets.CA_CRT}}
+          USER_CRT: ${{ secrets.USER_CRT }}
+          USER_KEY: ${{ secrets.USER_KEY }}
+      - name: Check Connect VPN
+        run: echo ${{ steps.connect_vpn.outputs.STATUS }}
+      - name: kill vpn
+        if: always()
+        run: sudo killall openvpn
