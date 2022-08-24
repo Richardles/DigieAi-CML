@@ -1,43 +1,44 @@
 name: VPN testing
 on: 
-  schedule:
+  # schedule:
     # * is a special character in YAML so you have to quote this string
     # - cron:  '30 1 1,15 * *'
     # - cron:  '0 17 * * *'
   workflow_dispatch:
 
 jobs:
-  connect-open-vpn:
-    runs-on: ubuntu-latest
-    # optionally use a convenient Ubuntu LTS + DVC + CML image
-    # container: docker://ghcr.io/iterative/cml:0-dvc2-base1
-    steps:
-      - uses: actions/checkout@v2
-      # may need to setup NodeJS & Python3 on e.g. self-hosted
-      # - uses: actions/setup-node@v2
-      #   with:
-      #     node-version: '16'
-      - uses: actions/setup-python@v2
-      #   with:
-      #     python-version: '3.x'
-      - uses: iterative/setup-cml@v1
+  run:
+    connect-open-vpn:
+      runs-on: ubuntu-latest
+      # optionally use a convenient Ubuntu LTS + DVC + CML image
+      # container: docker://ghcr.io/iterative/cml:0-dvc2-base1
+      steps:
+        - uses: actions/checkout@v2
+        # may need to setup NodeJS & Python3 on e.g. self-hosted
+        # - uses: actions/setup-node@v2
+        #   with:
+        #     node-version: '16'
+        - uses: actions/setup-python@v2
+        #   with:
+        #     python-version: '3.x'
+        - uses: iterative/setup-cml@v1
 
-      - name: Install Open VPN
-        run: sudo apt-get install openvpn
-      - name: Connect VPN
-        uses: golfzaptw/action-connect-ovpn@master
-        id: connect_vpn
-        with:
-          PING_URL: 'vpn.is-gs.com'
-          FILE_OVPN: '.github/vpn/config.ovpn'
-          SECRET: ${{ secrets.SECRET_USERNAME_PASSWORD }}
-          TLS_KEY: ${{ secrets.TLS_KEY }}
-        env:
-          CA_CRT: ${{ secrets.CA_CRT}}
-          USER_CRT: ${{ secrets.USER_CRT }}
-          USER_KEY: ${{ secrets.USER_KEY }}
-      - name: Check Connect VPN
-        run: echo ${{ steps.connect_vpn.outputs.STATUS }}
-      - name: kill vpn
-        if: always()
-        run: sudo killall openvpn
+        - name: Install Open VPN
+          run: sudo apt-get install openvpn
+        - name: Connect VPN
+          uses: golfzaptw/action-connect-ovpn@master
+          id: connect_vpn
+          with:
+            PING_URL: 'vpn.is-gs.com'
+            FILE_OVPN: '.github/vpn/config.ovpn'
+            SECRET: ${{ secrets.SECRET_USERNAME_PASSWORD }}
+            TLS_KEY: ${{ secrets.TLS_KEY }}
+          env:
+            CA_CRT: ${{ secrets.CA_CRT}}
+            USER_CRT: ${{ secrets.USER_CRT }}
+            USER_KEY: ${{ secrets.USER_KEY }}
+        - name: Check Connect VPN
+          run: echo ${{ steps.connect_vpn.outputs.STATUS }}
+        - name: kill vpn
+          if: always()
+          run: sudo killall openvpn
